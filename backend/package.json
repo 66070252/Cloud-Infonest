@@ -1,0 +1,37 @@
+{
+  "name": "infonest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r dotenv/config index.js",
+    "dev": "nodemon -r dotenv/config index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "dotnet": "^1.1.4",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.1",
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1",
+    "nodemon": "^3.1.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^12.0.0"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^10.2.3",
+    "supertest": "^7.1.4"
+  }
+}

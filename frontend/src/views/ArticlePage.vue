@@ -1,0 +1,200 @@
+<template>
+  <div>
+    <NavigationBar />
+    <div class="article-container" v-if="info">
+      <h1>{{ info.title }}</h1>
+      
+      <img v-if="info.imageUrl" :src="getImageUrl(info.imageUrl)" alt="Post image" class="content-image" />
+
+      <p class="article-content">{{ info.info }}</p>
+
+      <div class="like-section">
+        <button @click="handleLike('like')" class="like-button">👍 Like ({{ info.likes }})</button>
+        <button @click="handleLike('dislike')" class="dislike-button">👎 Dislike ({{ info.dislikes }})</button>
+      </div>
+      <div class="actions" v-if="isOwner">
+        <router-link :to="{ name: 'EditPostPage', params: { id: infoId } }" class="edit-button">Edit Post</router-link>
+        <button @click="deletePost" class="delete-button">Delete Post</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useAuthStore } from '../stores/authStore'
+import NavigationBar from '../components/NavigationBar.vue'
+
+// 1. (เพิ่ม) กำหนด API URL ที่นี่
+const API_URL = 'http://localhost:3000';
+
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+const infoId = route.params.id
+
+const info = ref(null)
+
+// 2. (เพิ่ม) ฟังก์ชันอัจฉริยะสำหรับจัดการ URL รูปภาพ
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) {
+    return null; // ถ้าไม่มี URL ก็ส่งค่า null
+  }
+  // ถ้า URL เป็น URL เต็ม (เช่น จาก S3) ให้ใช้มันเลย
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  // มิฉะนั้น (ถ้าเป็นรูปเก่า /uploads/...) ให้เติม API_URL เข้าไป
+  return `${API_URL}${imageUrl}`;
+};
+
+const isOwner = computed(() => {
+  return authStore.user && info.value && authStore.user.id === info.value.author
+})
+
+const deletePost = async () => {
+  if (!confirm('Are you sure you want to delete this post?')) {
+    return
+  }
+  try {
+    // 3. (แก้ไข) อัปเดต URL
+    const res = await fetch(`${API_URL}/api/info/${infoId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+
+    if (res.ok) {
+      alert('Post deleted successfully!')
+      router.push('/')
+    } else {
+      const data = await res.json()
+      alert(data.message || 'Failed to delete post.')
+    }
+  } catch (error) {
+    console.error('Error deleting post:', error)
+    alert('An error occurred.')
+  }
+}
+
+const handleLike = async (status) => {
+  if (!authStore.isLoggedIn) {
+    alert('Please log in to like or dislike posts.')
+    return
+  }
+
+  try {
+    // 4. (แก้ไข) อัปเดต URL
+    const res = await fetch(`${API_URL}/api/like`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify({
+        infoId: infoId,
+        status: status
+      })
+    })
+
+    if (res.ok) {
+      const result = await res.json()
+      info.value = result.info 
+    } else {
+      const data = await res.json()
+      alert(data.message || 'Action failed.')
+    }
+  } catch (error) {
+    console.error('Error handling like:', error)
+  }
+}
+
+onMounted(() => {
+  // 5. (แก้ไข) อัปเดต URL
+  fetch(`${API_URL}/api/info/${infoId}`)
+    .then(res => res.json())
+    .then(data => {
+      info.value = data
+    })
+    .catch(err => {
+      console.error('Failed to load info:', err)
+    })
+})
+</script>
+
+<style scoped>
+.article-container {
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 20px;
+}
+.article-content {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+.edit-button {
+  background-color: #1976d2; /* Blue */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 10px;
+  transition: background-color 0.2s;
+  display: inline-block;
+}
+.edit-button:hover {
+  background-color: #1565c0;
+}
+.content-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.actions {
+  text-align: right;
+  margin-top: 40px;
+}
+.delete-button {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.delete-button:hover {
+  background-color: #c62828;
+}
+.like-section {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+.like-button, .dislike-button {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.like-button:hover {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+}
+.dislike-button:hover {
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+}
+</style>
