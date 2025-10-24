@@ -26,7 +26,7 @@ import NavigationBar from '../components/NavigationBar.vue';
 import InfoFrame from '../components/InfoFrame.vue';
 
 // 1. (ADDED) Define the API URL
-const API_URL = 'https://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
+const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
 
 const likedPosts = ref([]);
 const isLoading = ref(true);
@@ -38,7 +38,7 @@ const getImageUrl = (imageUrl) => {
     return null;
   }
   // If it's a full S3 URL, use it directly
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('http://')) {
     return imageUrl;
   }
   // Otherwise, it's an old '/uploads' file, so add the API URL
