@@ -30,7 +30,7 @@ import InfoFrame from '../components/InfoFrame.vue'
 import NavigationBar from '../components/NavigationBar.vue'
 
 // --- 1. (แนะนำ) สร้างตัวแปรสำหรับ API URL เพื่อให้แก้ง่ายในอนาคต ---
-const API_URL = 'https://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com'; 
+const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com'; 
 // (ในอนาคต เมื่อ Deploy ให้เปลี่ยนค่านี้เป็น URL ของ Elastic Beanstalk)
 
 const infoList = ref([])
@@ -43,7 +43,7 @@ const getImageUrl = (imageUrl) => {
   }
   
   // ถ้า URL เป็น URL เต็ม (เช่น จาก S3) ให้ใช้มันเลย
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('http://')) {
     return imageUrl;
   }
   
