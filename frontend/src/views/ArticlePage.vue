@@ -27,7 +27,7 @@ import { useAuthStore } from '../stores/authStore'
 import NavigationBar from '../components/NavigationBar.vue'
 
 // 1. (เพิ่ม) กำหนด API URL ที่นี่
-const API_URL = 'https://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
+const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
 
 const route = useRoute()
 const router = useRouter()
@@ -42,7 +42,7 @@ const getImageUrl = (imageUrl) => {
     return null; // ถ้าไม่มี URL ก็ส่งค่า null
   }
   // ถ้า URL เป็น URL เต็ม (เช่น จาก S3) ให้ใช้มันเลย
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('http://')) {
     return imageUrl;
   }
   // มิฉะนั้น (ถ้าเป็นรูปเก่า /uploads/...) ให้เติม API_URL เข้าไป
