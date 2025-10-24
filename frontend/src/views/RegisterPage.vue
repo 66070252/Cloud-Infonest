@@ -46,7 +46,7 @@
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/user", {
+      const res = await fetch("http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

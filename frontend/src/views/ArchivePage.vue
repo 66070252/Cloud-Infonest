@@ -26,7 +26,7 @@ import NavigationBar from '../components/NavigationBar.vue';
 import InfoFrame from '../components/InfoFrame.vue';
 
 // 1. (ADDED) Define the API URL
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
 
 const likedPosts = ref([]);
 const isLoading = ref(true);

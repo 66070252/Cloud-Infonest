@@ -75,7 +75,7 @@ const submitPost = async () => {
       const formData = new FormData();
       formData.append('image', selectedFile.value);
 
-      const uploadRes = await fetch('http://localhost:3000/api/upload', {
+      const uploadRes = await fetch('http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authStore.token}`
@@ -95,7 +95,7 @@ const submitPost = async () => {
       imageUrl: imageUrl // ใส่ URL ที่ได้ (หรือ null ถ้าไม่ได้อัปโหลดรูป)
     };
 
-    const postRes = await fetch('http://localhost:3000/api/info', {
+    const postRes = await fetch('http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/info', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
