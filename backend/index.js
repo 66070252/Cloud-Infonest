@@ -32,8 +32,11 @@ await connect()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-   origin: 'http://localhost:8080',
-   credentials: true
+  origin: [
+    'http://localhost:8080', // 1. สำหรับเทสในเครื่อง
+    'https://main.d18ic8u6sn9d8q.amplifyapp.com/' // 2. (!! วาง URL ของคุณแทนที่ตรงนี้ !!)
+  ],
+  credentials: true
 }))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/api", router)

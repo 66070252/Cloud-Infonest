@@ -18,7 +18,7 @@
           </div>
           <div v-else-if="form.imageUrl" class="image-preview">
             <p>Current Image:</p>
-            <img :src="`http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com${form.imageUrl}`" />
+            <img :src="`https://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com${form.imageUrl}`" />
           </div>
         </div>
 
