@@ -42,7 +42,7 @@ const getImageUrl = (imageUrl) => {
     return null; // ถ้าไม่มี URL ก็ส่งค่า null
   }
   // ถ้า URL เป็น URL เต็ม (เช่น จาก S3) ให้ใช้มันเลย
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('http://')) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
     return imageUrl;
   }
   // มิฉะนั้น (ถ้าเป็นรูปเก่า /uploads/...) ให้เติม API_URL เข้าไป
