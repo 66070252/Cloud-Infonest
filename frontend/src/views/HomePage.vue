@@ -43,7 +43,7 @@ const getImageUrl = (imageUrl) => {
   }
   
   // ถ้า URL เป็น URL เต็ม (เช่น จาก S3) ให้ใช้มันเลย
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('http://')) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
     return imageUrl;
   }
   
