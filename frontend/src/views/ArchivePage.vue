@@ -38,7 +38,7 @@ const getImageUrl = (imageUrl) => {
     return null;
   }
   // If it's a full S3 URL, use it directly
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('http://')) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
     return imageUrl;
   }
   // Otherwise, it's an old '/uploads' file, so add the API URL
