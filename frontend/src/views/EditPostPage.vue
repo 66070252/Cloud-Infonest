@@ -60,7 +60,7 @@ const isSubmitting = ref(false);
 // 1. ดึงข้อมูลโพสต์เดิมมาใส่ในฟอร์ม
 onMounted(async () => {
   try {
-    const res = await fetch(`http://localhost:3000/api/info/${postId}`);
+    const res = await fetch(`http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/info/${postId}`);
     const data = await res.json();
     form.value.title = data.title;
     form.value.info = data.info;
@@ -90,7 +90,7 @@ const submitUpdate = async () => {
     if (selectedFile.value) {
       const formData = new FormData();
       formData.append('image', selectedFile.value);
-      const uploadRes = await fetch('http://localhost:3000/api/upload', {
+      const uploadRes = await fetch('http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/upload', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${authStore.token}` },
         body: formData
@@ -108,7 +108,7 @@ const submitUpdate = async () => {
     };
 
     // ส่ง PUT request ไปที่ Backend
-    const postRes = await fetch(`http://localhost:3000/api/info/${postId}`, {
+    const postRes = await fetch(`http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/info/${postId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
