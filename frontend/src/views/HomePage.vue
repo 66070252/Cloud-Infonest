@@ -93,7 +93,7 @@
   onMounted(async () => {
     try {
       // 2. ดึงข้อมูลบทความทั้งหมด (รอให้เสร็จ)
-      const res = await fetch('${API_URL}/api/info')
+      const res = await fetch('http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com/api/info')
       const data = await res.json()
 
       // 3. สร้าง Array ของ "Promises" (คำสั่ง fetch ผู้ใช้)

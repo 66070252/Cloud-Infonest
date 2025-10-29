@@ -5,11 +5,12 @@ const uploadController = {
     }
 
     try {
-      const imageUrlPath = `/uploads/${req.file.filename}`;
+      // req.file.location คือ URL เต็มของไฟล์บน S3 (เช่น https://...)
+      const imageUrl = req.file.location; 
 
       res.status(200).json({ 
         message: "Upload successful", 
-        imageUrl: imageUrlPath
+        imageUrl: imageUrl // ส่ง URL นี้กลับไปให้ Frontend
       });
     } catch (error) {
       console.error("Error in uploadController:", error);

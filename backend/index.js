@@ -36,7 +36,7 @@ app.use(cors({
       'http://localhost:8080', 
       'http://192.168.165.1:8080',
       'http://34.226.202.252',
-      'ec2-34-226-202-252.compute-1.amazonaws.com'
+      'http://ec2-34-226-202-252.compute-1.amazonaws.com'
    ],
    credentials: true
 }))
