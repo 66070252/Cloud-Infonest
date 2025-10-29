@@ -33,11 +33,18 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
   origin: [
-    'http://localhost:8080', // 1. สำหรับเทสในเครื่อง
-    'https://main.d18ic8u6sn9d8q.amplifyapp.com/' // 2. (!! วาง URL ของคุณแทนที่ตรงนี้ !!)
+    'http://localhost:8080',
+    'http://98.91.2.87',
+    'http://ec2-98-91-2-87.compute-1.amazonaws.com'
   ],
   credentials: true
 }))
+app.get("/", (req, res) => {
+  res.status(200).send({
+    status: 'ok',
+    message: 'Info_Nest API is running smoothly.'
+  });
+});
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/api", router)
 
