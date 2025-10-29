@@ -6,19 +6,20 @@
     </router-link>
 
     <div class="nav-center">
+      
       <div class="loggedIn-controls">
         <span class="buttons">
           <router-link to="/my-posts">My Posts</router-link>
           <router-link to="/create-post">Create</router-link>
           <router-link to="/archive">Archive</router-link>
         </span>
-      </div>
-      
-      <div class="search-container">
-        <form @submit.prevent="performSearch">
-          <input type="text" v-model="searchQuery" placeholder="Search posts..." />
-          <button type="submit">🔍</button>
-        </form>
+
+        <div class="search-container">
+          <form @submit.prevent="performSearch">
+            <input type="text" v-model="searchQuery" placeholder="Search posts..." />
+            <button type="submit">🔍</button>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -107,24 +108,26 @@ const performSearch = () => {
 .nav-right { /* ไม่ต้องแก้ */ }
 .is-login { display: flex; align-items: center; gap: 6px; }
 
-/* V V V V V  นี่คือจุดที่แก้ไข  V V V V V */
+/* V V V V V  หัวใจของการแก้ไขครั้งสุดท้าย  V V V V V */
 
 .search-container form { display: flex; }
 
 .search-container input {
   padding: 8px 12px;
   border-radius: 20px 0 0 20px;
-  
-  /* 1. เปลี่ยนให้เป็นสีขาวเสมอ */
-  background-color: white;
-  border: 1px solid #ccc;
-  border-right: none;
-  
-  /* (ลบ transition และ background-color: transparent ออกไป) */
+  /* 1. สไตล์เริ่มต้น: ทำให้โปร่งใสเหมือนพื้นหลัง Navbar */
+  background-color: transparent;
+  border: 1px solid transparent;
+  /* 2. เพิ่ม transition เพื่อให้การเปลี่ยนแปลงนุ่มนวล */
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
-/* 2. ลบกฎ CSS ที่ซ่อนช่องค้นหาตอนยังไม่ล็อกอินทิ้งไป */
-/* (บล็อก .nav-bar.is-logged-in .search-container input ถูกลบไปแล้ว) */
+/* 3. เมื่อล็อกอินแล้วเท่านั้น (.is-logged-in) ให้ Input กลับมาเป็นสีขาว */
+.nav-bar.is-logged-in .search-container input {
+  background-color: white;
+  border-color: #ccc;
+  border-right: none;
+}
 
 .search-container button {
   padding: 8px 12px;
@@ -134,7 +137,7 @@ const performSearch = () => {
   border-radius: 0 20px 20px 0;
   cursor: pointer;
 }
-/* (โค้ด CSS ที่เหลือเหมือนเดิม) */
+
 .nav-bar a { color: #fff; text-decoration: none; margin: 0 10px; font-size: 18px; transition: color 0.2s; padding: 6px 10px; border-radius: 4px; }
 .nav-bar .buttons a:hover,
 .nav-bar .buttons a.router-link-exact-active { background: rgba(255,255,255,0.15); color: #FFD700; }

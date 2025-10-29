@@ -2,9 +2,10 @@
   <div>
     <NavigationBar />
     <div class="article-container" v-if="info">
-      <h1>{{ info.title }}</h1>
       
       <img v-if="info.imageUrl" :src="getImageUrl(info.imageUrl)" alt="Post image" class="content-image" />
+
+      <h1>{{ info.title }}</h1>
 
       <p class="article-content">{{ info.info }}</p>
 
@@ -14,7 +15,7 @@
       </div>
       <div class="actions" v-if="isOwner">
         <router-link :to="{ name: 'EditPostPage', params: { id: infoId } }" class="edit-button">Edit Post</router-link>
-        <button @click="deletePost" class="delete-button">Delete Post</button>
+        <div @click="deletePost" class="delete-button">Delete Post</div>
       </div>
     </div>
   </div>
@@ -26,7 +27,6 @@ import { ref, onMounted, computed } from 'vue'
 import { useAuthStore } from '../stores/authStore'
 import NavigationBar from '../components/NavigationBar.vue'
 
-// 1. (เพิ่ม) กำหนด API URL ที่นี่
 const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
 
 const route = useRoute()
@@ -36,7 +36,6 @@ const infoId = route.params.id
 
 const info = ref(null)
 
-// 2. (เพิ่ม) ฟังก์ชันอัจฉริยะสำหรับจัดการ URL รูปภาพ
 const getImageUrl = (imageUrl) => {
   if (!imageUrl) {
     return null; // ถ้าไม่มี URL ก็ส่งค่า null
@@ -58,7 +57,6 @@ const deletePost = async () => {
     return
   }
   try {
-    // 3. (แก้ไข) อัปเดต URL
     const res = await fetch(`${API_URL}/api/info/${infoId}`, {
       method: 'DELETE',
       headers: {
@@ -86,7 +84,6 @@ const handleLike = async (status) => {
   }
 
   try {
-    // 4. (แก้ไข) อัปเดต URL
     const res = await fetch(`${API_URL}/api/like`, {
       method: 'POST',
       headers: {
@@ -112,7 +109,6 @@ const handleLike = async (status) => {
 }
 
 onMounted(() => {
-  // 5. (แก้ไข) อัปเดต URL
   fetch(`${API_URL}/api/info/${infoId}`)
     .then(res => res.json())
     .then(data => {
@@ -167,7 +163,9 @@ onMounted(() => {
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
+  text-decoration: none;
   cursor: pointer;
+  display: inline-block;
   transition: background-color 0.2s;
 }
 .delete-button:hover {

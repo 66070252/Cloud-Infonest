@@ -32,12 +32,13 @@ await connect()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: [
-    'http://localhost:8080',
-    'http://98.91.2.87',
-    'http://ec2-98-91-2-87.compute-1.amazonaws.com'
-  ],
-  credentials: true
+   origin: [
+      'http://localhost:8080', 
+      'http://192.168.165.1:8080',
+      'http://34.226.202.252',
+      'ec2-34-226-202-252.compute-1.amazonaws.com'
+   ],
+   credentials: true
 }))
 app.get("/", (req, res) => {
   res.status(200).send({

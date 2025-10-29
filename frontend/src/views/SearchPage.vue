@@ -25,7 +25,6 @@ import { useRoute } from 'vue-router';
 import NavigationBar from '../components/NavigationBar.vue';
 import InfoFrame from '../components/InfoFrame.vue';
 
-// 1. (เพิ่ม) กำหนด API URL ที่นี่
 const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
 
 const route = useRoute();
@@ -33,7 +32,6 @@ const results = ref([]);
 const isLoading = ref(true);
 const searchTerm = ref(route.query.q || '');
 
-// 2. (เพิ่ม) ฟังก์ชันอัจฉริยะสำหรับจัดการ URL รูปภาพ
 const getImageUrl = (imageUrl) => {
   if (!imageUrl) {
     return null; // ถ้าไม่มี URL ก็ส่งค่า null
@@ -50,7 +48,6 @@ const fetchResults = async (query) => {
   if (!query) return;
   isLoading.value = true;
   try {
-    // 3. (แก้ไข) อัปเดต URL
     const res = await fetch(`${API_URL}/api/info/search?q=${encodeURIComponent(query)}`);
     if (res.ok) {
       results.value = await res.json();

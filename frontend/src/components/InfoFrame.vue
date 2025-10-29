@@ -1,9 +1,24 @@
 <template>
   <router-link :to="to" class="info-frame">
-    <img v-if="imgSrc" :src="imgSrc" alt="Info Image" class="info-image" />
-    <div v-else class="info-image graybox"></div>
+    <div class="image-wrap">
+      <img v-if="imgSrc" :src="imgSrc" alt="Info Image" class="info-image" />
+      <div v-else class="info-image graybox"></div>
+      <div v-if="category" class="category-tag">{{ category }}</div>
+    </div>
     <div class="info-title">
       {{ title }}
+    </div>
+
+    <div class="info-metadata">
+      <div class="info-likes-dislikes">
+        <span class="likes">👍 {{ likes }}</span>
+        <span class="dislikes">👎 {{ dislikes }}</span>
+      </div>
+
+      <div class="author-date">
+        <div class="info-author">{{ author }}</div>
+        <div class="info-date">{{ date }}</div>
+      </div>
     </div>
   </router-link>
 </template>
@@ -17,9 +32,31 @@ defineProps({
     type: String,
     required: true
   },
+  category: {
+    type: String,
+    default: null
+  },
   to: {
     type: [String, Object],
     default: null
+  },
+  author: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: String,
+    required: true
+  },
+  likes: {
+    type: Number,
+    default: 0, 
+    required: true
+  },
+  dislikes: {
+    type: Number,
+    default: 0,
+    required: true
   }
 })
 </script>
@@ -58,7 +95,7 @@ defineProps({
 }
 
 .info-title {
-  font-size: 1em;
+  font-size: 1.1em;
   margin-bottom: 4px;
   text-align: left;
   color: #22223b;
@@ -67,5 +104,55 @@ defineProps({
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.image-wrap {
+  position: relative;
+}
+
+.category-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.info-metadata {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  gap: 12px;
+}
+
+.info-likes-dislikes {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.95em;
+  color: #555;
+}
+
+.author-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.95em;
+  color: #555;
+}
+
+.info-author {
+  font-weight: 600;
+}
+
+.info-date {
+  font-size: 0.9em;
+  color: #777;
 }
 </style>

@@ -9,7 +9,11 @@
           v-for="info in myPosts"
           :key="info._id"
           :imgSrc="getImageUrl(info.imageUrl)"
-          :title="info.title" 
+          :title="info.title"
+          :author="info.author"
+          :date="info.date"
+          :likes="info.likes"
+          :dislikes="info.dislikes"
           :to="{ name: 'ArticlePage', params: { id: info._id }}"/>
       </div>
       <div v-else class="no-posts">
@@ -26,14 +30,12 @@ import { useAuthStore } from '../stores/authStore';
 import NavigationBar from '../components/NavigationBar.vue';
 import InfoFrame from '../components/InfoFrame.vue';
 
-// 1. (เพิ่ม) กำหนด API URL ที่นี่
 const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com';
 
 const myPosts = ref([]);
 const isLoading = ref(true);
 const authStore = useAuthStore();
 
-// 2. (เพิ่ม) ฟังก์ชันอัจฉริยะสำหรับจัดการ URL รูปภาพ
 const getImageUrl = (imageUrl) => {
   if (!imageUrl) {
     return null; // ถ้าไม่มี URL ก็ส่งค่า null
@@ -52,7 +54,6 @@ onMounted(async () => {
     return;
   }
   try {
-    // 3. (แก้ไข) อัปเดต URL
     const res = await fetch(`${API_URL}/api/info/mine`, {
       headers: {
         'Authorization': `Bearer ${authStore.token}`
@@ -61,6 +62,19 @@ onMounted(async () => {
     if (res.ok) {
       const data = await res.json();
       myPosts.value = data;
+      // Fetch user data for each post's author
+      const userFetchPromises = data.map(info => {
+        return fetch(`${API_URL}/api/user/${info.author}`)
+          .then(res => res.json())
+          .then(userData => {
+            info.author = userData.username;
+            info.date = new Date(info.date).toDateString();
+            return info;
+          });
+      });
+
+      // Wait for all user data to be fetched
+      myPosts.value = await Promise.all(userFetchPromises);
     } else {
       console.error('Failed to fetch my posts');
     }
