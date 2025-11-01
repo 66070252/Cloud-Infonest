@@ -62,12 +62,12 @@
   import NavigationBar from '../components/NavigationBar.vue'
 
   const API_URL = 'http://infonest-app-env.eba-2pmq3au2.us-east-1.elasticbeanstalk.com'; 
-
   // ใช้ ref สำหรับ reactive data
   const infoList = ref([])
   const topInfos = ref([])
   const selectedCategory = ref(null)
   const categories = ref([])
+
 
   const getImageUrl = (imageUrl) => {
   if (!imageUrl) {
@@ -82,7 +82,6 @@
   // มิฉะนั้น (ถ้าเป็นรูปเก่า /uploads/...) ให้เติม API_URL เข้าไป
   return `${API_URL}${imageUrl}`;
   };
-
   // Computed: filtered articles based on selected category
   const filteredInfoList = computed(() => {
     if (!selectedCategory.value) return infoList.value
@@ -120,7 +119,15 @@
       topInfos.value = sorted.slice(0, 3)
 
       // Extract unique categories from all articles
-      categories.value = [...new Set(processedData.map(info => info.category))].sort()
+      categories.value = ["Technology & Computing",
+                          "Science & Nature",
+                          "Health & Lifestyle",
+                          "Business & Finance",
+                          "Arts & Entertainment",
+                          "Society & Culture",
+                          "Travel & Places",
+                          "News & Current Events",
+                          "Other"]
 
       // For the main list, show all items but avoid duplicating the top 3
       // const topIds = new Set(topInfos.value.map(i => i._id))

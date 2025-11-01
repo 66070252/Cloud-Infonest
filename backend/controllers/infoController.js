@@ -51,20 +51,28 @@ const infoController = {
   },
   delete: async (req, res) => {
     try {
-      const infoId = req.params.id
-      const userId = req.user
+    const infoId = req.params.id;
 
-      const result = await infoService.deleteByUser(infoId, userId)
-
-      if (result.error) {
-        return res.status(result.status).json({ message: result.error })
-      }
-
-      res.status(200).json({ message: "Info deleted successfully" })
-    } catch (err) {
-      res.status(500).json(err)
+    if (!req.user || !req.user.id || !req.user.role) {
+      return res.status(401).json({ message: 'Authentication error or user role missing.' });
     }
-  },
+    
+    const userId = req.user.id;
+    const userRole = req.user.role; 
+
+    const result = await infoService.deleteByUser(infoId, userId, userRole);
+
+    if (result.error) {
+      return res.status(result.status).json({ message: result.error });
+    }
+
+    res.status(result.status || 200).json({ message: "Info deleted successfully" });
+
+  } catch (err) {
+    console.error('Error in infoController.delete:', err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+},
   searchInfos: async (req, res) => {
     try {
       const query = req.query.q;

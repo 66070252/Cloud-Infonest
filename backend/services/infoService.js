@@ -29,19 +29,23 @@ const infoService = {
   delete: async (id) => {
     return await Info.findByIdAndDelete(id);
   },
-  deleteByUser: async (infoId, userId) => {
+  deleteByUser: async (infoId, userId, userRole) => {
     const info = await Info.findById(infoId);
 
     if (!info) {
       return { error: "Info not found", status: 404 };
     }
 
-    if (info.author.toString() !== userId) {
-      return { error: "Forbidden: You are not the author of this post", status: 403 };
+    const isOwner = info.author.toString() === userId;
+    const isAdmin = userRole === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      return { error: "Forbidden: You are not authorized to delete this post", status: 403 };
     }
 
     await Info.findByIdAndDelete(infoId);
-    return { success: true };
+    
+    return { success: true, status: 200 };
   },
   updateByUser: async (infoId, userId, updateData) => {
     const info = await Info.findById(infoId);

@@ -10,12 +10,15 @@
       <p class="article-content">{{ info.info }}</p>
 
       <div class="like-section">
-        <button @click="handleLike('like')" class="like-button">👍 Like ({{ info.likes }})</button>
-        <button @click="handleLike('dislike')" class="dislike-button">👎 Dislike ({{ info.dislikes }})</button>
+        <button @click="handleLike('like')" class="like-button" :class="{active: info.likes && isOwner }">👍 Like ({{ info.likes }})</button>
+        <button @click="handleLike('dislike')" class="dislike-button" :class="{active: info.dislikes && isOwner }">👎 Dislike ({{ info.dislikes }})</button>
       </div>
-      <div class="actions" v-if="isOwner">
-        <router-link :to="{ name: 'EditPostPage', params: { id: infoId } }" class="edit-button">Edit Post</router-link>
-        <div @click="deletePost" class="delete-button">Delete Post</div>
+      <div class="actions">
+        <!-- 1. ปุ่ม Edit ยังแสดงเฉพาะเจ้าของ (isOwner) -->
+        <router-link v-if="isOwner" :to="{ name: 'EditPostPage', params: { id: infoId } }" class="edit-button">Edit Post</router-link>
+        
+        <!-- 2. ปุ่ม Delete แสดงเมื่อเป็นเจ้าของ (isOwner) หรือ เป็นแอดมิน (isAdmin) -->
+        <div v-if="isOwner || isAdmin" @click="deletePost" class="delete-button">Delete Post</div>
       </div>
     </div>
   </div>
@@ -47,6 +50,10 @@ const getImageUrl = (imageUrl) => {
   // มิฉะนั้น (ถ้าเป็นรูปเก่า /uploads/...) ให้เติม API_URL เข้าไป
   return `${API_URL}${imageUrl}`;
 };
+
+const isAdmin = computed(() => {
+  return authStore.user && authStore.user.role === 'admin'
+})
 
 const isOwner = computed(() => {
   return authStore.user && info.value && authStore.user.id === info.value.author
@@ -143,6 +150,7 @@ onMounted(() => {
 .edit-button:hover {
   background-color: #1565c0;
 }
+
 .content-image {
   width: 100%;
   max-width: 100%;
@@ -191,8 +199,18 @@ onMounted(() => {
   background-color: #e3f2fd;
   border-color: #90caf9;
 }
+.like-button.active {
+  background-color: #1976d2;
+  color: white;
+  border-color: #1565c0;
+}
 .dislike-button:hover {
   background-color: #ffebee;
   border-color: #ef9a9a;
+}
+.dislike-button.active {
+  background-color: #d32f2f;
+  color: white;
+  border-color: #c62828;
 }
 </style>

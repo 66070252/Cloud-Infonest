@@ -7,20 +7,24 @@
 
     <div class="nav-center">
       
+      <!-- บล็อกนี้จะมีแค่ปุ่มที่ซ่อน/แสดงตอนล็อกอิน -->
       <div class="loggedIn-controls">
         <span class="buttons">
           <router-link to="/my-posts">My Posts</router-link>
           <router-link to="/create-post">Create</router-link>
           <router-link to="/archive">Archive</router-link>
         </span>
-
-        <div class="search-container">
-          <form @submit.prevent="performSearch">
-            <input type="text" v-model="searchQuery" placeholder="Search posts..." />
-            <button type="submit">🔍</button>
-          </form>
-        </div>
       </div>
+
+      <!-- 1. ย้าย search-container ออกมาข้างนอก -->
+      <!-- บล็อกนี้จะแสดงผลตลอดเวลา -->
+      <div class="search-container">
+        <form class="search-bar" @submit.prevent="performSearch">
+          <input type="text" v-model="searchQuery" placeholder="Search posts..." />
+          <button type="submit" >🔍</button>
+        </form>
+      </div>
+
     </div>
 
     <div class="nav-right">
@@ -87,13 +91,16 @@ const performSearch = () => {
   flex-grow: 1;
   display: flex;
   justify-content: center;
+  /* 2. เพิ่ม 2 บรรทัดนี้ */
+  align-items: center;
+  gap: 30px;
 }
 
 /* --- กลุ่ม Control สำหรับตอนล็อกอิน --- */
 .loggedIn-controls {
   display: flex;
   align-items: center;
-  gap: 30px;
+  /* gap: 30px; (ย้าย gap ไปไว้ที่ .nav-center แทน) */
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease-in-out, visibility 0.2s;
@@ -110,7 +117,12 @@ const performSearch = () => {
 
 /* V V V V V  หัวใจของการแก้ไขครั้งสุดท้าย  V V V V V */
 
-.search-container form { display: flex; }
+.search-container form { 
+  display: flex; 
+  margin: 0;
+  padding: 0;
+  background: none;
+}
 
 .search-container input {
   padding: 8px 12px;
@@ -120,14 +132,34 @@ const performSearch = () => {
   border: 1px solid transparent;
   /* 2. เพิ่ม transition เพื่อให้การเปลี่ยนแปลงนุ่มนวล */
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  color: white; /* ทำให้ placeholder สีขาว มองเห็นบนพื้นหลังโปร่งใส */
+}
+
+/* ทำให้ placeholder เป็นสีขาวนวล */
+.search-container input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+form .search-bar{
+  padding: none;
+  margin: none;
+  border: none;
+  background: none;
 }
 
 /* 3. เมื่อล็อกอินแล้วเท่านั้น (.is-logged-in) ให้ Input กลับมาเป็นสีขาว */
-.nav-bar.is-logged-in .search-container input {
+.nav-bar .search-container input {
   background-color: white;
   border-color: #ccc;
   border-right: none;
+  color: #333; /* เมื่อพื้นหลังขาว ตัวอักษรต้องกลับมาสีเข้ม */
 }
+
+.nav-bar .search-container input::placeholder {
+  color: #999;
+}
+
 
 .search-container button {
   padding: 8px 12px;
